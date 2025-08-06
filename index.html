@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC 단어 테스트</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 커스텀 스타일 (Tailwind 클래스를 주로 사용하지만, 필요한 경우 추가) */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center p-4">
+    <div id="app" class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md text-center transform transition-all duration-300 hover:scale-105">
+        <!-- 앱 콘텐츠가 여기에 동적으로 로드됩니다 -->
+    </div>
+
+    <script>
+        // 단어 목록 (TOEIC 800점대 및 900점대 수준 예시)
+        // 여기에 토익 800점대 단어 500개와 900점대 단어 500개를 추가해주세요.
+        // 예시: { word: '단어', definition: '정의' } 형식으로 추가
+        const vocabulary800 = [
+            // --- TOEIC 800점대 단어 예시 시작 ---
+            { word: 'adapt', definition: '적응하다, 개조하다' },
+            { word: 'assess', definition: '평가하다, 사정하다' },
+            { word: 'collaborate', definition: '협력하다, 공동 작업하다' },
+            { word: 'diverse', definition: '다양한' },
+            { word: 'enhance', definition: '향상시키다, 강화하다' },
+            { word: 'feasible', definition: '실행 가능한, 실현 가능한' },
+            { word: 'innovative', definition: '혁신적인' },
+            { word: 'monitor', definition: '감시하다, 관찰하다' },
+            { word: 'optimize', definition: '최적화하다' },
+            { word: 'prioritize', definition: '우선순위를 매기다' },
+            { word: 'resolve', definition: '해결하다, 결심하다' },
+            { word: 'sustain', definition: '유지하다, 지속하다' },
+            { word: 'undertake', definition: '착수하다, 맡다' },
+            { word: 'valid', definition: '유효한, 타당한' },
+            { word: 'fluctuate', definition: '변동하다, 오르내리다' },
+            { word: 'incentive', definition: '장려금, 유인책' },
+            { word: 'mandatory', definition: '의무적인, 강제적인' },
+            { word: 'prominent', definition: '유명한, 두드러진' },
+            { word: 'redundant', definition: '불필요한, 정리 해고된' },
+            { word: 'speculate', definition: '추측하다, 투기하다' },
+            { word: 'consensus', definition: '의견 일치, 합의' },
+            { word: 'delegation', definition: '대표단, 위임' },
+            { word: 'expenditure', definition: '지출, 비용' },
+            { word: 'foresee', definition: '예견하다, 예측하다' },
+            { word: 'implication', definition: '함축, 영향' },
+            { word: 'liability', definition: '책임, 부채' },
+            { word: 'negligible', definition: '하찮은, 무시해도 좋은' },
+            { word: 'perpetual', definition: '영구적인, 끊임없는' },
+            { word: 'reiterate', definition: '반복하다, 되풀이하다' },
+            { word: 'subsequent', definition: '그 다음의, 차후의' },
+            // --- TOEIC 800점대 단어 예시 끝 ---
+
+            // 여기에 800점대 단어 500개를 추가해주세요.
+        ];
+
+        const vocabulary900 = [
+            // --- TOEIC 900점대 단어 예시 시작 (기존 단어 포함) ---
+            { word: 'acquire', definition: '(지식, 기술 등을) 습득하다, 얻다' },
+            { word: 'allocate', definition: '(자금, 시간 등을) 할당하다, 배분하다' },
+            { word: 'comply', definition: '(법, 규칙 등을) 준수하다, 따르다' },
+            { word: 'dedicate', definition: '(시간, 노력 등을) 바치다, 헌신하다' },
+            { word: 'endorse', definition: '(공개적으로) 지지하다, 보증하다' },
+            { word: 'facilitate', definition: '(과정, 진행을) 용이하게 하다, 촉진하다' },
+            { word: 'implement', definition: '(계획, 정책 등을) 실행하다, 이행하다' },
+            { word: 'initiate', definition: '(사업, 계획 등을) 시작하다, 개시하다' },
+            { word: 'leverage', definition: '(자원, 영향력을) 활용하다, 지렛대 효과를 내다' },
+            { word: 'mitigate', definition: '(고통, 위험 등을) 완화시키다, 경감하다' },
+            { word: 'negotiate', definition: '협상하다, 교섭하다' },
+            { word: 'articulate', definition: '명확히 표현하다' },
+            { word: 'disseminate', definition: '널리 퍼뜨리다, 전파하다' },
+            { word: 'reimburse', definition: '변제하다, 상환하다' },
+            { word: 'streamline', definition: '간소화하다, 능률화하다' },
+            { word: 'substantiate', definition: '입증하다, 구체화하다' },
+            { word: 'underscore', definition: '강조하다, 분명히 보여주다' },
+            { word: 'validate', definition: '입증하다, 확인하다' },
+            { word: 'contingency', definition: '만일의 사태, 우발적인 사건' },
+            { word: 'discrepancy', definition: '불일치, 차이' },
+            { word: 'expedite', definition: '신속히 처리하다, 촉진하다' },
+            { word: 'imperative', definition: '필수적인, 긴급한' },
+            { word: 'meticulous', definition: '꼼꼼한, 세심한' },
+            { word: 'prerequisite', definition: '필수 조건' },
+            { word: 'scrutinize', definition: '세심히 살피다, 면밀히 조사하다' },
+            { word: 'unanimous', definition: '만장일치의' },
+            { word: 'ameliorate', definition: '개선하다, 완화시키다' },
+            { word: 'conducive', definition: '~에 도움이 되는' },
+            { word: 'delineate', definition: '묘사하다, 설명하다' },
+            { word: 'equivocal', definition: '애매모호한, 불분명한' },
+            { word: 'ubiquitous', definition: '어디에나 있는, 아주 흔한' },
+            // --- TOEIC 900점대 단어 예시 끝 ---
+
+            // 여기에 900점대 단어 500개를 추가해주세요.
+        ];
+
+        // 퀴즈 상태 변수
+        let quizStarted = false;
+        let selectedLevel = null; // '800' 또는 '900'
+        let currentWordIndex = 0;
+        let shuffledWords = [];
+        let currentOptions = []; // 4지선다 옵션
+        let feedback = '';
+        let score = 0;
+        let quizFinished = false;
+
+        const appDiv = document.getElementById('app');
+
+        // 배열 섞기 유틸리티 함수
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // 요소 교환
+            }
+            return array;
+        }
+
+        // 4지선다 옵션 생성 함수
+        function generateOptions(currentWord, targetVocabulary) {
+            const correctDefinition = currentWord.definition;
+            const options = [correctDefinition];
+
+            const allDefinitions = targetVocabulary.map(item => item.definition);
+            let incorrectDefinitionsPool = allDefinitions.filter(def => def !== correctDefinition);
+
+            // 오답 3개 무작위로 선택 (중복 방지)
+            while (options.length < 4 && incorrectDefinitionsPool.length > 0) {
+                const randomIndex = Math.floor(Math.random() * incorrectDefinitionsPool.length);
+                const randomIncorrectDef = incorrectDefinitionsPool[randomIndex];
+
+                if (!options.includes(randomIncorrectDef)) {
+                    options.push(randomIncorrectDef);
+                }
+                incorrectDefinitionsPool.splice(randomIndex, 1); // 선택된 오답은 풀에서 제거
+            }
+
+            // 옵션이 4개 미만일 경우 (단어 수가 적을 때), 현재 레벨의 단어에서 추가 정의를 가져와 채웁니다.
+            let tempIndex = 0;
+            while (options.length < 4 && tempIndex < targetVocabulary.length) {
+                const additionalDef = targetVocabulary[tempIndex].definition;
+                if (!options.includes(additionalDef)) {
+                    options.push(additionalDef);
+                }
+                tempIndex++;
+            }
+
+            return shuffleArray(options);
+        }
+
+        // 퀴즈 시작 핸들러
+        function handleStartQuiz(level) {
+            selectedLevel = level;
+            quizStarted = true;
+
+            const targetVocabulary = selectedLevel === '800' ? vocabulary800 : vocabulary900;
+            shuffledWords = shuffleArray([...targetVocabulary]); // 새로운 배열로 섞기
+            currentWordIndex = 0;
+            score = 0;
+            quizFinished = false;
+            feedback = '';
+            renderApp(); // 퀴즈 화면 렌더링
+        }
+
+        // 정답 확인 핸들러
+        function handleCheckAnswer(selectedDefinition) {
+            const currentWord = shuffledWords[currentWordIndex];
+            if (selectedDefinition === currentWord.definition) {
+                feedback = '정답입니다! 🎉';
+                score++;
+            } else {
+                feedback = `오답입니다. 정답은 '${currentWord.definition}' 입니다. 😢`;
+            }
+            renderApp(); // 피드백 반영을 위해 다시 렌더링
+
+            // 잠시 피드백을 보여준 후 다음 단어로 이동
+            setTimeout(() => {
+                if (currentWordIndex < shuffledWords.length - 1) {
+                    currentWordIndex++;
+                    feedback = ''; // 피드백 초기화
+                    currentOptions = generateOptions(shuffledWords[currentWordIndex], selectedLevel === '800' ? vocabulary800 : vocabulary900);
+                    renderApp(); // 다음 단어 화면 렌더링
+                } else {
+                    quizFinished = true; // 퀴즈 종료
+                    renderApp(); // 퀴즈 종료 화면 렌더링
+                }
+            }, 1500); // 1.5초 후 다음 단어로
+        }
+
+        // 퀴즈 재시작 핸들러 (레벨 선택 화면으로 돌아감)
+        function handleRestartQuiz() {
+            quizStarted = false;
+            selectedLevel = null; // 레벨 선택 초기화
+            quizFinished = false;
+            score = 0;
+            feedback = '';
+            renderApp(); // 레벨 선택 화면 렌더링
+        }
+
+        // 앱의 현재 상태에 따라 UI를 렌더링하는 메인 함수
+        function renderApp() {
+            appDiv.innerHTML = ''; // 기존 콘텐츠 초기화
+
+            const h1 = document.createElement('h1');
+            h1.className = 'text-4xl font-extrabold text-gray-800 mb-6';
+            h1.textContent = 'TOEIC 단어 테스트 📚';
+            appDiv.appendChild(h1);
+
+            if (!quizStarted) {
+                // 레벨 선택 화면
+                const levelSelectionDiv = document.createElement('div');
+                levelSelectionDiv.className = 'space-y-4';
+
+                const p = document.createElement('p');
+                p.className = 'text-lg text-gray-600 mb-6';
+                p.textContent = '도전할 토익 단어 레벨을 선택해주세요!';
+                levelSelectionDiv.appendChild(p);
+
+                const button800 = document.createElement('button');
+                button800.className = 'w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg mb-4';
+                button800.textContent = 'TOEIC 800점대 단어 도전 🚀';
+                button800.onclick = () => handleStartQuiz('800');
+                levelSelectionDiv.appendChild(button800);
+
+                const button900 = document.createElement('button');
+                button900.className = 'w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg';
+                button900.textContent = 'TOEIC 900점대 단어 도전 🌟';
+                button900.onclick = () => handleStartQuiz('900');
+                levelSelectionDiv.appendChild(button900);
+
+                appDiv.appendChild(levelSelectionDiv);
+
+            } else if (quizFinished) {
+                // 퀴즈 종료 화면
+                const quizFinishedDiv = document.createElement('div');
+                quizFinishedDiv.className = 'space-y-6';
+
+                const h2 = document.createElement('h2');
+                h2.className = 'text-3xl font-bold text-gray-800';
+                h2.textContent = '퀴즈 완료! 🎉';
+                quizFinishedDiv.appendChild(h2);
+
+                const scoreP = document.createElement('p');
+                scoreP.className = 'text-2xl text-gray-700';
+                scoreP.innerHTML = `최종 점수: <span class="font-extrabold text-blue-600">${score}</span> / ${shuffledWords.length}`;
+                quizFinishedDiv.appendChild(scoreP);
+
+                const restartButton = document.createElement('button');
+                restartButton.className = 'w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg';
+                restartButton.textContent = '다시 시작하기 (레벨 선택)';
+                restartButton.onclick = handleRestartQuiz;
+                quizFinishedDiv.appendChild(restartButton);
+
+                appDiv.appendChild(quizFinishedDiv);
+
+            } else {
+                // 퀴즈 진행 중 화면
+                const quizInProgressDiv = document.createElement('div');
+                quizInProgressDiv.className = 'space-y-6';
+
+                const progressP = document.createElement('p');
+                progressP.className = 'text-sm text-gray-500';
+                progressP.textContent = `${currentWordIndex + 1} / ${shuffledWords.length}`;
+                quizInProgressDiv.appendChild(progressP);
+
+                const wordDisplayDiv = document.createElement('div');
+                wordDisplayDiv.className = 'bg-gray-100 p-6 rounded-xl shadow-inner mb-4';
+                const wordP = document.createElement('p');
+                wordP.className = 'text-3xl font-bold text-gray-800';
+                wordP.textContent = shuffledWords[currentWordIndex]?.word;
+                wordDisplayDiv.appendChild(wordP);
+                quizInProgressDiv.appendChild(wordDisplayDiv);
+
+                const optionsGridDiv = document.createElement('div');
+                optionsGridDiv.className = 'grid grid-cols-1 gap-4';
+
+                // 옵션이 아직 생성되지 않았다면, 지금 생성
+                if (currentOptions.length === 0) {
+                    currentOptions = generateOptions(shuffledWords[currentWordIndex], selectedLevel === '800' ? vocabulary800 : vocabulary900);
+                }
+
+                currentOptions.forEach((option, index) => {
+                    const optionButton = document.createElement('button');
+                    optionButton.className = 'w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-left';
+                    optionButton.textContent = option;
+                    optionButton.onclick = () => handleCheckAnswer(option);
+                    optionsGridDiv.appendChild(optionButton);
+                });
+                quizInProgressDiv.appendChild(optionsGridDiv);
+
+                if (feedback) {
+                    const feedbackP = document.createElement('p');
+                    feedbackP.className = `text-lg font-bold ${feedback.includes('정답') ? 'text-green-600' : 'text-red-600'}`;
+                    feedbackP.textContent = feedback;
+                    quizInProgressDiv.appendChild(feedbackP);
+                }
+
+                const scoreP = document.createElement('p');
+                scoreP.className = 'text-md text-gray-600';
+                scoreP.innerHTML = `현재 점수: <span class="font-bold text-purple-600">${score}</span>`;
+                quizInProgressDiv.appendChild(scoreP);
+
+                appDiv.appendChild(quizInProgressDiv);
+            }
+        }
+
+        // 앱 초기 렌더링
+        renderApp();
+    </script>
+</body>
+</html>
